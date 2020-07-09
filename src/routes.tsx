@@ -1,19 +1,29 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-
-import Main from './pages/main';
+import TodoList from './pages/todoList';
+import TodoDetail from './pages/todoDetail';
 
 const Stack = createStackNavigator();
 
 function MyStack() {
   return (
     <Stack.Navigator
+      initialRouteName="TodoList"
       screenOptions={{
         headerStyle: {backgroundColor: '#DA552F'},
         headerTintColor: '#FFF',
       }}>
-      <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen
+        name="TodoList"
+        component={TodoList}
+        options={{title: 'To Do List'}}
+      />
+      <Stack.Screen
+        name="TodoDetail"
+        component={TodoDetail}
+        options={{title: 'To Do Detail'}}
+      />
     </Stack.Navigator>
   );
 }
@@ -24,6 +34,11 @@ const Routes = () => {
       <MyStack />
     </NavigationContainer>
   );
+};
+
+export type RootStackParamList = {
+  TodoList: undefined;
+  TodoDetail: {todoId: string};
 };
 
 export default Routes;
