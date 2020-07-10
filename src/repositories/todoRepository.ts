@@ -24,8 +24,14 @@ class TodoRepository extends Repository<Todo> {
     return (await api.post<Todo>(this.path, todoCreateDto)).data;
   }
 
-  public async update(todo: Todo): Promise<Todo> {
-    return (await this.api.put<Todo>(`${this.path}/${todo._id}`, todo)).data;
+  public async update(
+    id: string,
+    todoUpdateDto: {
+      description: string;
+      done: boolean;
+    },
+  ): Promise<Todo> {
+    return (await this.api.put<Todo>(`${this.path}/${id}`, todoUpdateDto)).data;
   }
 
   public async delete(id: string) {

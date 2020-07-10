@@ -2,13 +2,13 @@ import * as Yup from 'yup';
 import {Formik} from 'formik';
 
 import React, {Component, Fragment} from 'react';
-import {TextInput, Text, Button, Alert, Switch} from 'react-native';
+import {TextInput, Text, Button, Switch, View} from 'react-native';
 import styles from './styles';
 import {Todo} from './../../models/todo';
 
 export default class TodoForm extends Component<{
   todo?: Todo;
-  navigation: any;
+  onSubmit: (description: string, done: boolean) => void;
 }> {
   todoValidationSchema() {
     return Yup.object().shape({
@@ -30,14 +30,9 @@ export default class TodoForm extends Component<{
     return (
       <Formik
         initialValues={{description, done}}
-        onSubmit={() => {
-          Alert.alert('Sucesso', 'Evento salvo!', [
-            {
-              text: 'OK',
-              onPress: () => this.props.navigation.navigate('TodoList'),
-            },
-          ]);
-        }}
+        onSubmit={(values) =>
+          this.props.onSubmit(values.description, values.done)
+        }
         validationSchema={this.todoValidationSchema()}>
         {({
           values,
@@ -63,15 +58,24 @@ export default class TodoForm extends Component<{
               </Text>
             }
             <Text>{'Finalizado: '}</Text>
-            <Switch
-              onValueChange={() => setFieldValue('done', !values.done)}
-              value={values.done}
-            />
-            <Button
-              title={id ? 'Atualizar' : 'Criar'}
-              disabled={!isValid}
-              onPress={handleSubmit}
-            />
+            <View style={styles.switchContainer}>
+              <Switch
+                onValueChange={() => setFieldValue('done', !values.done)}
+                value={values.done}
+              />
+              <Text style={styles.switchText}>
+                {values.done ? 'SIM' : 'NÃO'}
+              </Text>
+            </View>
+
+            <View style={styles.primaryButton}>
+              <Button
+                color={'#FFF'}
+                title={id ? 'Atualizar' : 'Criar'}
+                disabled={!isValid}
+                onPress={handleSubmit}
+              />
+            </View>
           </Fragment>
         )}
       </Formik>

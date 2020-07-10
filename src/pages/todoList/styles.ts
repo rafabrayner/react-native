@@ -19,6 +19,18 @@ const styles = StyleSheet.create({
   todoDescription: {
     color: '#666',
   },
+  fabButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#DA552F',
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default styles;

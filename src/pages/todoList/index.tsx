@@ -7,6 +7,7 @@ import {Todo} from '../../models/todo';
 import {RootStackParamList} from './../../routes';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type TodoListScreenRouteProp = RouteProp<RootStackParamList, 'TodoList'>;
 type TodoListScreenNavigationProp = StackNavigationProp<
@@ -25,8 +26,12 @@ const TodoList = ({
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    loadTodos();
-  }, []);
+    // Carrega sempre os valores mais recentes da API quando exibir a página
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadTodos();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   async function loadTodos() {
     try {
@@ -64,9 +69,15 @@ const TodoList = ({
     <View style={styles.container}>
       <FlatList
         data={todos}
-        keyExtractor={(todo: any) => todo._id}
+        keyExtractor={(todo: Todo) => todo._id}
         renderItem={renderTodo}
       />
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('TodoDetail')}
+        style={styles.fabButton}>
+        <Icon name="plus" size={30} color="#FFF" />
+      </TouchableOpacity>
     </View>
   );
 };

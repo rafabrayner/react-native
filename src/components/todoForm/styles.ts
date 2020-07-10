@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import colors from './../../styles/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,6 +38,18 @@ const styles = StyleSheet.create({
   inputFormError: {
     fontSize: 10,
     color: 'red',
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  switchText: {
+    marginStart: 10,
+  },
+  primaryButton: {
+    backgroundColor: colors.primary,
+    alignContent: 'center',
   },
 });
 

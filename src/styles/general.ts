@@ -18,6 +18,9 @@ const general: StyleSheet.NamedStyles<any> = {
     alignSelf: 'center',
     marginBottom: metrics.doubleBaseMargin,
   },
+  primaryButton: {
+    backgroundColor: colors.primary,
+  },
 };
 
 export default general;

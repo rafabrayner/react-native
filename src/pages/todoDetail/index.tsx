@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 import Loading from './../../components/loading';
 import todoRepository from './../../repositories/todoRepository';
 import {Todo} from '../../models/todo';
@@ -23,7 +23,8 @@ const TodoDetail = ({
 }) => {
   const [todo, setTodo] = useState<Todo>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
-  const {todoId} = route.params;
+  const todoId =
+    route.params && route.params.todoId ? route.params.todoId : undefined;
 
   useEffect(() => {
     loadTodo();
@@ -31,10 +32,12 @@ const TodoDetail = ({
 
   async function loadTodo() {
     try {
-      setLoading(true);
-      const todoResult = await todoRepository.getById(todoId);
-      console.log('RESULTADO: ', todoResult);
-      setTodo(todoResult);
+      if (todoId) {
+        setLoading(true);
+        const todoResult = await todoRepository.getById(todoId);
+        console.log('RESULTADO: ', todoResult);
+        setTodo(todoResult);
+      }
     } catch (error) {
       console.error(error);
       setTodo(null);
@@ -43,16 +46,47 @@ const TodoDetail = ({
     }
   }
 
-  function renderTodo(todoItem: Todo) {
+  async function onFormSubmit(description: string, done: boolean) {
+    let alertTitle = '',
+      alertMessage = '';
+    try {
+      let todoResponse: Todo;
+      if (todo && todo._id) {
+        todoResponse = await todoRepository.update(todo._id, {
+          description,
+          done,
+        });
+        alertMessage = 'Tarefa Atualizada com Sucesso';
+      } else {
+        todoResponse = await todoRepository.create({description, done});
+        alertMessage = 'Tarefa Criada com Sucesso';
+      }
+      alertTitle = 'Sucesso';
+      setTodo(todoResponse);
+    } catch (error) {
+      alertTitle = 'Error';
+      alertMessage = 'Não foi possível realizar a requisição';
+      console.error(error);
+    } finally {
+      Alert.alert(alertTitle, alertMessage, [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('TodoList'),
+        },
+      ]);
+    }
+  }
+
+  function renderTodo(todoItem) {
     return (
       <View>
-        <TodoForm todo={todoItem} navigation={navigation} />
+        <TodoForm todo={todoItem} onSubmit={onFormSubmit} />
       </View>
     );
   }
 
   // this.props.navigation.setOptions({title: 'Updated!'}); // Muda navigation title em tempo real
-  return todo === undefined || loading ? <Loading /> : renderTodo(todo);
+  return loading ? <Loading /> : renderTodo(todo);
 };
 
 export default TodoDetail;

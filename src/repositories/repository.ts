@@ -5,6 +5,6 @@ export default abstract class Repository<T> {
 
   public abstract create(data: any): Promise<T>;
   public abstract read(queryParams?: any): Promise<T[]>;
-  public abstract update(data: any): Promise<T>;
+  public abstract update(id: string, data: any): Promise<T>;
   public abstract delete(id: string): Promise<any>;
 }
