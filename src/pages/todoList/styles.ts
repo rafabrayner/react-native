@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#DA552F',
+    backgroundColor: colors.theme,
     position: 'absolute',
     bottom: 20,
     right: 20,
@@ -35,16 +35,17 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     flexDirection: 'row',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     marginBottom: 10,
   },
   updateButton: {
-    padding: 10,
+    //padding: 10,
     backgroundColor: colors.primary,
     marginEnd: 10,
   },
   removeButton: {
-    padding: 10,
+    //padding: 10,
     backgroundColor: colors.secondary,
   },
   buttonText: {
