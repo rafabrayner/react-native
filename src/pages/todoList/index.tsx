@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, Alert} from 'react-native';
 import styles from './styles';
 import Loading from './../../components/loading';
 import todoRepository from './../../repositories/todoRepository';
@@ -45,19 +45,65 @@ const TodoList = ({
     }
   }
 
-  function renderTodo({item}: {item: Todo}) {
+  async function deleteTodo(todo: Todo, index: number) {
+    try {
+      await todoRepository.delete(todo._id);
+      todos.splice(index, 1);
+      setTodos([...todos]);
+      return Alert.alert('Sucesso', 'Tarefa removida com sucesso');
+    } catch (error) {
+      return Alert.alert(
+        'Erro',
+        'Desculpe, mas não foi possível remover a tarefa',
+      );
+    } finally {
+    }
+  }
+
+  function openDeleteAlert(todo: Todo, index: number) {
+    return Alert.alert(
+      'Deletar Tarefa',
+      'Você tem certeza que deseja realmente remover essa tarefa?\nUma vez feito isso não poderá mais ser desfeito.',
+      [
+        {
+          text: 'OK',
+          onPress: () => deleteTodo(todo, index),
+          style: 'destructive',
+        },
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      {cancelable: false},
+    );
+  }
+
+  function renderTodo(value) {
+    const {item, index}: {item: Todo; index: number} = value;
     return (
       <View style={styles.todoContainer}>
         <Text style={styles.todoTitle}>{item.description}</Text>
         <Text style={styles.todoDescription}>
           {item.done ? 'Finalizado' : 'Em Andamento'}
         </Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('TodoDetail', {todoId: item._id});
-          }}>
-          <Text>Acessar</Text>
-        </TouchableOpacity>
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity
+            style={styles.updateButton}
+            onPress={() => {
+              navigation.navigate('TodoDetail', {todoId: item._id});
+            }}>
+            <Text style={styles.buttonText}>Atualizar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.removeButton}
+            onPress={() => {
+              openDeleteAlert(item, index);
+            }}>
+            <Text style={styles.buttonText}>Remover</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }

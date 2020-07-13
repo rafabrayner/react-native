@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import TodoList from './pages/todoList';
 import TodoDetail from './pages/todoDetail';
+import colors from './styles/colors';
 
 const Stack = createStackNavigator();
 
@@ -11,7 +12,7 @@ function MyStack() {
     <Stack.Navigator
       initialRouteName="TodoList"
       screenOptions={{
-        headerStyle: {backgroundColor: '#DA552F'},
+        headerStyle: {backgroundColor: colors.theme},
         headerTintColor: '#FFF',
       }}>
       <Stack.Screen

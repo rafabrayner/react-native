@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import colors from './../../styles/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
   },
   todoDescription: {
     color: '#666',
+    marginBottom: 10,
   },
   fabButton: {
     width: 60,
@@ -30,6 +32,23 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  updateButton: {
+    padding: 10,
+    backgroundColor: colors.primary,
+    marginEnd: 10,
+  },
+  removeButton: {
+    padding: 10,
+    backgroundColor: colors.secondary,
+  },
+  buttonText: {
+    color: '#FFF',
   },
 });
 
